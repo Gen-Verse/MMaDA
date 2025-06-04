@@ -157,8 +157,8 @@ class MMadaModelLM(LLaDAModelLM):
                 uncond_input_ids = torch.cat(
                     [uncond_prefix, input_ids[:, resolution + 1:]], dim=1)
                 model_input = torch.cat([input_ids, uncond_input_ids])
-                attention_mask = torch.cat([attention_mask, uncond_attention_mask], dim=0)
-                attention_bias = (attention_mask[:, :, None] & attention_mask[:, None, :]).bool().unsqueeze(1)
+                all_attention_mask = torch.cat([attention_mask, uncond_attention_mask], dim=0)
+                attention_bias = (all_attention_mask[:, :, None] & all_attention_mask[:, None, :]).bool().unsqueeze(1)
                 logits = self(model_input, attention_bias=attention_bias).logits 
                 # print(f"logits.shape: {logits.shape}")
                 cond_logits, uncond_logits = torch.chunk(logits, 2, dim=0)
@@ -229,29 +229,18 @@ class MMadaModelLM(LLaDAModelLM):
         attention_bias_t2i = (t2i_masks[:, :, None] & t2i_masks[:, None, :]).bool().unsqueeze(1)
         attention_bias[:batch_size_t2i] = attention_bias_t2i
         logits = self(input_ids, attention_bias=attention_bias).logits 
-        # logits = self(input_ids).logits
         self.output_size = logits.shape[-1]
-
-        # print(f"logits shape: {logits.shape}") B, 359, vocab_size
 
         if batch_size_t2i == 0:
             loss_t2i = torch.tensor(0.0, device=input_ids.device)
         else:
-            # t2i loss
             loss_t2i = F.cross_entropy(
                 logits[:batch_size_t2i, max_seq_length + 1:].contiguous().view(-1, self.output_size),
                 labels[:batch_size_t2i, max_seq_length + 1:].contiguous().view(-1), ignore_index=-100,
                 )
         
-        # llada loss  
         masked_indices = input_ids == self.config.mask_token_id 
         masked_indices_lm = masked_indices[batch_size_t2i:batch_size_t2i + batch_size_lm]
-        # 新增调试代码：统计每行mask数量
-        # if masked_indices_lm.numel() > 0:
-        #     mask_counts = torch.sum(masked_indices_lm, dim=1)
-        #     logging.info(f"[LM mask nums]: {mask_counts.cpu()}.")
-        # else:
-        #     logging.info("[LM mask nums] no LM sample.")
         masked_indices_mmu = masked_indices[-batch_size_mmu:]
         p_mask_lm = p_mask_lm.to(masked_indices_lm.device)
         p_mask_mmu = p_mask_mmu.to(masked_indices_mmu.device)       
@@ -260,13 +249,12 @@ class MMadaModelLM(LLaDAModelLM):
             logits[batch_size_t2i:batch_size_t2i + batch_size_lm][masked_indices_lm].contiguous().view(-1, self.output_size),
             labels[batch_size_t2i:batch_size_t2i + batch_size_lm][masked_indices_lm].contiguous().view(-1), ignore_index=-100, reduction='none'
             )/p_mask_lm[masked_indices_lm]
-        # print(f"logits lm shape: {logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape}")
-        loss_lm = loss_lm.sum() / (logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[0] * logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[1])
 
-        # llm loss 
-        answer_lengths_lm = answer_lengths_lm.to(masked_indices_lm.device)
-        loss_lm = torch.sum(loss_lm / answer_lengths_lm[masked_indices_lm]) / (logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[0])  
-        
+        if answer_lengths_lm is not None:
+            loss_lm = torch.sum(loss_lm / answer_lengths_lm[masked_indices_lm]) / (logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[0])  
+        else:
+            loss_lm = loss_lm.sum() / (logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[0] * logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape[1])     
+
         loss_mmu = F.cross_entropy(
             logits[-batch_size_mmu:][masked_indices_mmu].contiguous().view(-1, self.output_size),
             labels[-batch_size_mmu:][masked_indices_mmu].contiguous().view(-1), ignore_index=-100, reduction='none'
@@ -299,8 +287,6 @@ class MMadaModelLM(LLaDAModelLM):
         logits = self(input_ids, attention_bias=attention_bias).logits 
         # logits = self(input_ids).logits
         self.output_size = logits.shape[-1]
-
-        # print(f"logits shape: {logits.shape}") B, 359, vocab_size
 
         if batch_size_t2i == 0:
             loss_t2i = torch.tensor(0.0, device=input_ids.device)
@@ -337,9 +323,11 @@ class MMadaModelLM(LLaDAModelLM):
             logits[start_lm:end_lm][masked_indices_lm].contiguous().view(-1, self.output_size),
             labels[start_lm:end_lm][masked_indices_lm].contiguous().view(-1), ignore_index=-100, reduction='none'
             )/p_mask_lm[masked_indices_lm]
-        # print(f"logits lm shape: {logits[batch_size_t2i:batch_size_t2i + batch_size_lm].shape}")
-        loss_lm = loss_lm.sum() / (logits[start_lm:end_lm].shape[0] * logits[start_lm:end_lm].shape[1])
-        loss_lm = torch.sum(loss_lm / answer_lengths_lm[masked_indices_lm]) / (logits[start_lm:end_lm].shape[0]) 
+
+        if answer_lengths_lm is not None:
+            loss_lm = torch.sum(loss_lm / answer_lengths_lm[masked_indices_lm]) / (logits[start_lm:end_lm].shape[0]) 
+        else:
+            loss_lm = loss_lm.sum() / (logits[start_lm:end_lm].shape[0] * logits[start_lm:end_lm].shape[1])
 
         loss_mmu = F.cross_entropy(
             logits[start_mmu:end_mmu][masked_indices_mmu].contiguous().view(-1, self.output_size),
