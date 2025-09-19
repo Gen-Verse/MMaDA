@@ -1,7 +1,7 @@
 <div align="center">
 <br>
 <img src="assets/title.png" width="166">
-<h3>Multimodal Large Diffusion Language Models</h3></div>
+<h3>Multimodal Large Diffusion Language Models (NeurIPS 2025)</h3></div>
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.15809">
