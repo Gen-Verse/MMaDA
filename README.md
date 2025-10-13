@@ -122,7 +122,10 @@ wandb login
 ```
 Inference demo for MultiModal Generation and you can view the results on wandb:
 ```
-python3 inference_mmu.py config=configs/mmada_demo.yaml mmu_image_root=./mmu_validation question='Please describe this image in detail.' 
+python3 inference_mmu.py \
+  config=configs/mmada_demo.yaml \
+  mmu_image_root=./mmu_validation \
+  mmu_prompts_file=./mmu_validation/prompts_with_vqa.json \
 ```
 
 ### 3. Text-to-Image Genertion
