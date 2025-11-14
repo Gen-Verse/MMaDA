@@ -70,6 +70,7 @@ We demonstrate the decoding process of MMaDA with a teaser video to show how a d
 </div> -->
 
 ## 📰 Latest Updates
+* **[2025-11-13]** We release [MMaDA-Parallel](https://github.com/tyfeld/MMaDA-Parallel), a new class of [Multimodal Large Diffusion Language Models for Thinking-Aware Image Editing and Generation](https://arxiv.org/abs/2511.09611), with two model varients of [MMaDA-Parallel-A](https://huggingface.co/tyfeld/MMaDA-Parallel-A) and [MMaDA-Parallel-M](https://huggingface.co/tyfeld/MMaDA-Parallel-M).
 * **[2025-09-09]** We open source a comprehensive RL framework for diffusion language model, [dLLM-RL](https://github.com/Gen-Verse/dLLM-RL), which also supports post-training our MMaDA model. 
 * **[2025-06-02]** We open source our **MMaDA-8B-MixCoT** at [Huggingface](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT). 
 * **[2025-05-24]** We add support for MPS inference, tested on M4.
