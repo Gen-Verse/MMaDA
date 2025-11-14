@@ -29,6 +29,13 @@
     />
   </a>
   </a>
+  <a href="https://huggingface.co/tyfeld/MMaDA-Parallel-M">
+  <img 
+        src="https://img.shields.io/badge/MMaDA--Parallel-Hugging%20Face%20Model-orange?logo=huggingface&logoColor=yellow" 
+        alt="MMaDA on Hugging Face"
+    />
+  </a>
+  </a>
     <a href="https://github.com/Gen-Verse/dLLM-RL">
     <img 
         src="https://img.shields.io/badge/RL%20Infra-TraceRL%20Framework-pink?logo=huggingface&logoColor=brown" 
@@ -70,7 +77,7 @@ We demonstrate the decoding process of MMaDA with a teaser video to show how a d
 </div> -->
 
 ## 📰 Latest Updates
-* **[2025-11-13]** We release [MMaDA-Parallel](https://github.com/tyfeld/MMaDA-Parallel), a new class of [Multimodal Large Diffusion Language Models for Thinking-Aware Image Editing and Generation](https://arxiv.org/abs/2511.09611), with two model varients of [MMaDA-Parallel-A](https://huggingface.co/tyfeld/MMaDA-Parallel-A) and [MMaDA-Parallel-M](https://huggingface.co/tyfeld/MMaDA-Parallel-M).
+* **[2025-11-13]** We release **[MMaDA-Parallel](https://arxiv.org/abs/2511.09611)**, a new class of Multimodal dLLMs for Thinking-Aware Image Editing and Generation.
 * **[2025-09-09]** We open source a comprehensive RL framework for diffusion language model, [dLLM-RL](https://github.com/Gen-Verse/dLLM-RL), which also supports post-training our MMaDA model. 
 * **[2025-06-02]** We open source our **MMaDA-8B-MixCoT** at [Huggingface](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT). 
 * **[2025-05-24]** We add support for MPS inference, tested on M4.
@@ -85,17 +92,13 @@ MMaDA includes a series of checkpoints reflecting different training stages:
 1. **[MMaDA-8B-Base](https://huggingface.co/Gen-Verse/MMaDA-8B-Base)**: After pretraining and instruction tuning. Capable of basic text generation, image generation, image captioning and **thinking ablities**.
 2. **[MMaDA-8B-MixCoT](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT)**: After mixed long chain-of-thought (CoT) fine-tuning. Capable of **complex** textual, multimodal and image generation reasoning. 
 3. **MMaDA-8B-Max (coming soon)**: After UniGRPO reinforment learning. Excels at complex reasoning and awesome visual generation. Will be released in the future.
+4. **[MMaDA-Parallel-A](https://huggingface.co/tyfeld/MMaDA-Parallel-A) and [MMaDA-Parallel-M](https://huggingface.co/tyfeld/MMaDA-Parallel-M)**: A **parallel thinking-aware** multimodal diffusion model that enables continuous, bidirectional interaction between text and images throughout the entire denoising trajectory.
 <div align="center">
 <img src="assets/example_compare.png" width="800">
 <p><i>Overview of MMaDA's capablities.</i></p>
 </div>
 
 
-
-
-## ✅ TODO
-- [x] Release [MMaDA-8B-MixCoT](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT)
-- [ ] Release MMaDA-8B-Max and OpenRLHF-based UniGRPO training code.
 
 ## ⚙️ Quick Start
 First, set up the enviroment:
