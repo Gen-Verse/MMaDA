@@ -77,12 +77,12 @@ We demonstrate the decoding process of MMaDA with a teaser video to show how a d
 </div> -->
 
 ## 📰 Latest Updates
-* **[2025-11-13]** We release **[MMaDA-Parallel](https://arxiv.org/abs/2511.09611)**, a new class of Multimodal dLLMs for Thinking-Aware Image Editing and Generation.
-* **[2025-09-09]** We open source a comprehensive RL framework for diffusion language model, [dLLM-RL](https://github.com/Gen-Verse/dLLM-RL), which also supports post-training our MMaDA model. 
-* **[2025-06-02]** We open source our **MMaDA-8B-MixCoT** at [Huggingface](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT). 
+* **[2025-11-13]** We release **[MMaDA-Parallel](https://arxiv.org/abs/2511.09611)**, a new class of multimodal dLLMs for Thinking-Aware Image Editing and Generation.
+* **[2025-09-09]** We open source a comprehensive RL framework for dLLMs, **[dLLM-RL](https://github.com/Gen-Verse/dLLM-RL)** with released SOTA instruct and long-CoT models **[TraDo-8B-Instruct](https://huggingface.co/Gen-Verse/TraDo-8B-Instruct), [TraDo-4B-Instruct](https://huggingface.co/Gen-Verse/TraDo-8B-Instruct), and [TraDo-8B-Thinking](https://huggingface.co/Gen-Verse/TraDo-8B-Thinking)**. 
+* **[2025-06-02]** We open source our **[MMaDA-8B-MixCoT](https://huggingface.co/Gen-Verse/MMaDA-8B-MixCoT)**. 
 * **[2025-05-24]** We add support for MPS inference, tested on M4.
 * **[2025-05-22]** We release the inference and training code of MMaDA for text generation, multimodal generation and image generation. 
-* **[2025-05-22]** We open source our **MMaDA-8B-Base** at [Huggingface](https://huggingface.co/Gen-Verse/MMaDA-8B-Base). **MMaDA-8B-MixCoT** and  **MMaDA-8B-Max** will be released in the near future.
+* **[2025-05-22]** We open source our **[MMaDA-8B-Base](https://huggingface.co/Gen-Verse/MMaDA-8B-Base)**.
 * **[2025-05-22]** We release our [research paper](https://arxiv.org/abs/2505.15809) and [demo](https://huggingface.co/spaces/Gen-Verse/MMaDA) for the first unified multimodal diffusion model: MMaDA. 
 
 
