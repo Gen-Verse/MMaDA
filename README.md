@@ -190,7 +190,8 @@ accelerate launch --config_file path/to/your/accelerate_config --main_process_po
 ```
 
 ### Stage 3 UniGRPO RL
-[Will be released once we finished our code transition to OpenRLHF]
+
+**Note:** The UniGRPO algorithm has been further implemented and integrated in our [dLLM-RL](https://github.com/Gen-Verse/dLLM-RL) repository. If you want to aggregate multiple rewards together, the key file to modify is [`./reward/rl_reward_v.py`](https://github.com/Gen-Verse/dLLM-RL/blob/main/reward/rl_reward_v.py) — this should be the only change needed.
 
 
 ## 📊 Evaluation
